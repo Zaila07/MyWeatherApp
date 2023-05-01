@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>My Weather App</title>
+</head>
+<body>
+    <div class ="container">
+        <div class = "row">
+            <div class="col-md-6 offset-md-3">
+                <h1> My Weather App</h1>
+                <form action="">
+                    <div class = "form-group">
+                        <label for="location">Location:</label>
+                        <input type="text" class="form-control" id="location" placeholder="Enter City or Zip Code">
+                     </div>
+                     <button type="submit" class=" btn btn-primary">Get Weather </button>
+                </form>
+                <div class="mt-3" id="weather-info">
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(event) {
+                event.preventDefault(); // Prevent form submission
+                var location = $('#location').val(); // Get the location entered by the user
+                var apiKey = 'c800aaa7373f9c5fbdcf039b25ef1ef2'; // Replace with your API key
+
+        
+                // Make a GET request to the OpenWeatherMap API
+                $.get('https://api.openweathermap.org/data/2.5/weather', {
+                    q: location,
+                    appid: apiKey,
+                    units: 'metric'
+                }).done(function(data) {
+                    // Display the weather information
+                    var html = '<h2>Weather in ' + data.name + '</h2>';
+                    html += '<p>Temperature: ' + data.main.temp + '&deg;C</p>';
+                    html += '<p>Humidity: ' + data.main.humidity + '%</p>';
+                    html += '<p>Description: ' + data.weather[0].description + '</p>';
+                    $('#weather-info').html(html);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    // Display an error message if the request fails
+                    var html = '<div class="alert alert-danger" role="alert">';
+                    html += 'Error: ' + jqXHR.responseJSON.message;
+                    html += '</div>';
+                    $('#weather-info').html(html);
+                });
+            });
+        });
+        </script>
+       
+        
+        
+        
+        
+        
+        
+</body>
+</html>
